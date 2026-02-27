@@ -195,10 +195,46 @@
 
 .print-grid {
   grid-template-columns: repeat(var(--print-columns, 4), minmax(0, 1fr));
+  gap: 2.5mm;
 }
 
 .print-barcode-wrap {
   background: #ffffff;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  min-height: 0;
+}
+
+.print-sheet {
+  width: min(198mm, 100%);
+  margin-inline: auto;
+  background: #ffffff;
+  padding: 2mm;
+}
+
+.print-card {
+  border: 0;
+  border-radius: 0;
+  background: #ffffff;
+  padding: 2mm;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.print-barcode-image {
+  max-height: 14mm;
+  image-rendering: crisp-edges;
+}
+
+.print-company,
+.print-number {
+  font-size: 10px;
+  line-height: 1.1;
+}
+
+.print-safe-text {
+  color: #000000;
 }
 
 @media print {
@@ -217,12 +253,19 @@
     padding: 0 !important;
   }
 
+  .print-page-label {
+    display: none !important;
+  }
+
   .print-grid {
     grid-template-columns: repeat(var(--print-columns, 4), minmax(0, 1fr)) !important;
     gap: 2.5mm !important;
   }
 
   .print-sheet {
+    width: auto !important;
+    margin: 0 !important;
+    padding: 2mm !important;
     break-after: page;
     page-break-after: always;
   }
@@ -233,8 +276,6 @@
   }
 
   .print-card {
-    break-inside: avoid;
-    page-break-inside: avoid;
     border: 0 !important;
     border-radius: 0 !important;
     background: #ffffff !important;
@@ -242,10 +283,7 @@
   }
 
   .print-barcode-wrap {
-    border: 0 !important;
-    border-radius: 0 !important;
-    padding: 0 !important;
-    min-height: 0 !important;
+    background: #ffffff !important;
   }
 
   .print-barcode-image {

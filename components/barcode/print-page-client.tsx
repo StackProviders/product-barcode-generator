@@ -275,7 +275,7 @@ export function PrintPageClient({ jobKey }: PrintPageClientProps) {
                       {safeCompanyName}
                     </p>
                   ) : null}
-                  <div className="print-barcode-wrap mt-1 flex min-h-16 items-center justify-center rounded-sm p-1">
+                  <div className="print-barcode-wrap mt-0.5 flex min-h-16 items-center justify-center rounded-sm p-1">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={buildBarcodeImageSrc(
@@ -289,7 +289,7 @@ export function PrintPageClient({ jobKey }: PrintPageClientProps) {
                       loading="eager"
                     />
                   </div>
-                  <p className="print-number print-safe-text mt-1 truncate text-center text-xs text-foreground">
+                  <p className="print-number print-safe-text font-semibold truncate text-center text-xs text-foreground">
                     {value}
                   </p>
                 </article>
