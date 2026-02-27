@@ -245,11 +245,11 @@ export function PrintPageClient({ jobKey }: PrintPageClientProps) {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            <Button onClick={() => window.print()}>Print / Save PDF</Button>
+          <div className="flex flex-wrap justify-end items-center gap-2">
             <Button variant="outline" onClick={() => window.close()}>
               Close Tab
             </Button>
+            <Button onClick={() => window.print()}>Print / Save PDF</Button>
           </div>
         </CardContent>
       </Card>

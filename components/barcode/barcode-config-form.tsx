@@ -152,6 +152,38 @@ export function BarcodeConfigForm({
 
         <Separator />
 
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="scale">Barcode Scale</Label>
+            <Input
+              id="scale"
+              name="scale"
+              type="number"
+              min={MIN_BARCODE_SCALE}
+              max={MAX_BARCODE_SCALE}
+              value={values.scale}
+              onChange={(event) => onChange("scale", event.target.value)}
+            />
+            {renderFieldError(errors.scale)}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="height">Barcode Height</Label>
+            <Input
+              id="height"
+              name="height"
+              type="number"
+              min={MIN_BARCODE_HEIGHT}
+              max={MAX_BARCODE_HEIGHT}
+              value={values.height}
+              onChange={(event) => onChange("height", event.target.value)}
+            />
+            {renderFieldError(errors.height)}
+          </div>
+        </div>
+
+        <Separator />
+
         {values.mode === "timestamp" ? (
           <div className="space-y-2">
             <Label htmlFor="quantity">Quantity</Label>
@@ -195,38 +227,6 @@ export function BarcodeConfigForm({
             </div>
           </div>
         )}
-
-        <Separator />
-
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label htmlFor="scale">Barcode Scale</Label>
-            <Input
-              id="scale"
-              name="scale"
-              type="number"
-              min={MIN_BARCODE_SCALE}
-              max={MAX_BARCODE_SCALE}
-              value={values.scale}
-              onChange={(event) => onChange("scale", event.target.value)}
-            />
-            {renderFieldError(errors.scale)}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="height">Barcode Height</Label>
-            <Input
-              id="height"
-              name="height"
-              type="number"
-              min={MIN_BARCODE_HEIGHT}
-              max={MAX_BARCODE_HEIGHT}
-              value={values.height}
-              onChange={(event) => onChange("height", event.target.value)}
-            />
-            {renderFieldError(errors.height)}
-          </div>
-        </div>
 
         <div className="flex justify-end flex-wrap gap-3">
           <Button variant="outline" onClick={onReset} disabled={isSubmitting}>

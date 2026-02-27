@@ -61,7 +61,7 @@ export function BarcodePreviewGrid({
                 <p className="text-center text-xs font-medium text-foreground">{safeCompanyName}</p>
               ) : null}
               <p className="truncate text-xs text-muted-foreground">{item.value}</p>
-              <div className="flex min-h-28 items-center justify-center rounded-md border border-border bg-card p-2 dark:bg-white">
+              <div className="flex min-h-28 items-center justify-center rounded-md border border-border bg-barcode-surface p-2">
                 {item.status === "ready" && item.url ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img

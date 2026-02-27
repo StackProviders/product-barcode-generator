@@ -7,6 +7,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-barcode-surface: var(--barcode-surface);
   --font-sans: Inter, sans-serif;
   --font-mono: JetBrains Mono, monospace;
   --color-sidebar-ring: var(--sidebar-ring);
@@ -74,6 +75,7 @@
 
 :root {
   --radius: 0.5rem;
+  --barcode-surface: var(--card);
   --background: oklch(0.9730 0.0133 286.1503);
   --foreground: oklch(0.3015 0.0572 282.4176);
   --card: oklch(1.0000 0 0);
@@ -129,6 +131,7 @@
 }
 
 .dark {
+  --barcode-surface: var(--secondary-foreground);
   --background: oklch(0.1743 0.0227 283.7998);
   --foreground: oklch(0.9185 0.0257 285.8834);
   --card: oklch(0.2284 0.0384 282.9324);
@@ -199,7 +202,7 @@
 }
 
 .print-barcode-wrap {
-  background: #ffffff;
+  background: var(--barcode-surface);
   border: 0;
   border-radius: 0;
   padding: 0;
@@ -209,14 +212,14 @@
 .print-sheet {
   width: min(198mm, 100%);
   margin-inline: auto;
-  background: #ffffff;
+  background: var(--background);
   padding: 2mm;
 }
 
 .print-card {
   border: 0;
   border-radius: 0;
-  background: #ffffff;
+  background: var(--background);
   padding: 2mm;
   break-inside: avoid;
   page-break-inside: avoid;
@@ -234,7 +237,7 @@
 }
 
 .print-safe-text {
-  color: #000000;
+  color: var(--foreground);
 }
 
 @media print {
@@ -244,8 +247,8 @@
   }
 
   body {
-    background: #ffffff !important;
-    color: #000000 !important;
+    background: var(--background) !important;
+    color: var(--foreground) !important;
   }
 
   .print-page {
@@ -278,12 +281,12 @@
   .print-card {
     border: 0 !important;
     border-radius: 0 !important;
-    background: #ffffff !important;
+    background: var(--background) !important;
     padding: 2mm !important;
   }
 
   .print-barcode-wrap {
-    background: #ffffff !important;
+    background: var(--barcode-surface) !important;
   }
 
   .print-barcode-image {
@@ -298,6 +301,6 @@
   }
 
   .print-safe-text {
-    color: #000000 !important;
+    color: var(--foreground) !important;
   }
 }
