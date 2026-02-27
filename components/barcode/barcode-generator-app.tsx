@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { ArrowUpRight, Building2 } from "lucide-react";
 
 import type { BarcodeGeneratorConfigInput, ConfigField } from "@/lib/config";
 import {
@@ -25,27 +26,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Link from "next/link";
 
 type FieldErrorMap = Partial<Record<ConfigField, string>>;
-
-const PROJECT_CAPABILITIES = [
-  {
-    title: "Generation Engine",
-    description: "Timestamp and range generation with strict validation and scalable limits.",
-  },
-  {
-    title: "Rendering Pipeline",
-    description: "Server-side barcode rendering via API route using bwip-js PNG output.",
-  },
-  {
-    title: "Print Workflow",
-    description: "Dedicated print tab with row/column controls, quality presets, and PDF-ready flow.",
-  },
-  {
-    title: "PWA + Mobile",
-    description: "Installable app, offline fallback, and responsive UI for desktop/tablet/mobile.",
-  },
-] as const;
 
 const DEFAULT_FORM_VALUES: BarcodeFormValues = {
   companyName: "",
@@ -188,26 +171,27 @@ export function BarcodeGeneratorApp() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex flex-wrap gap-2">
-            <Badge variant="secondary">Next.js 16 App Router</Badge>
-            <Badge variant="secondary">shadcn/ui</Badge>
-            <Badge variant="secondary">bwip-js</Badge>
-            <Badge variant="outline">PWA installable</Badge>
-            <Badge variant="outline">Print & Save PDF</Badge>
-            <Badge variant="outline">Thermal POS ready</Badge>
-            <Badge variant="outline">Multi-tenant ready</Badge>
-          </div>
+          <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
+            <article className="rounded-lg border border-border bg-muted/30 p-4">
+              <div className="flex items-center gap-2">
+                <Building2 className="size-4 text-muted-foreground" />
+                <Badge variant="secondary">Built by StackProviders</Badge>
+              </div>
+              <p className="mt-3 text-sm text-muted-foreground">
+                We build production-grade web products for agencies, startups, and operations teams.
+                This barcode platform is part of our real-world POS and automation toolchain.
+              </p>
+            </article>
 
-          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-            {PROJECT_CAPABILITIES.map((item) => (
-              <article
-                key={item.title}
-                className="rounded-lg border border-border bg-muted/30 p-3"
-              >
-                <h3 className="text-sm font-semibold">{item.title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{item.description}</p>
-              </article>
-            ))}
+            <Link
+              href="https://github.com/StackProviders/product-barcode-generator"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+            >
+              Visit Project
+              <ArrowUpRight className="size-4" />
+            </Link>
           </div>
         </CardContent>
       </Card>
