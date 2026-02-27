@@ -1,7 +1,14 @@
 "use client";
 
 import type { BarcodeFormat, ConfigField, GenerationMode } from "@/lib/config";
-import { BARCODE_FORMATS, GENERATION_MODES } from "@/lib/config";
+import {
+  BARCODE_FORMATS,
+  GENERATION_MODES,
+  MAX_BARCODE_HEIGHT,
+  MAX_BARCODE_SCALE,
+  MIN_BARCODE_HEIGHT,
+  MIN_BARCODE_SCALE,
+} from "@/lib/config";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,6 +31,8 @@ export interface BarcodeFormValues {
   quantity: string;
   rangeStart: string;
   rangeEnd: string;
+  scale: string;
+  height: string;
 }
 
 type FieldErrorMap = Partial<Record<ConfigField, string>>;
@@ -32,8 +41,10 @@ interface BarcodeConfigFormProps {
   values: BarcodeFormValues;
   errors: FieldErrorMap;
   isSubmitting: boolean;
+  canPrint: boolean;
   onChange: <K extends keyof BarcodeFormValues>(field: K, value: BarcodeFormValues[K]) => void;
   onSubmit: () => void;
+  onPrint: () => void;
   onReset: () => void;
 }
 
@@ -60,8 +71,10 @@ export function BarcodeConfigForm({
   values,
   errors,
   isSubmitting,
+  canPrint,
   onChange,
   onSubmit,
+  onPrint,
   onReset,
 }: BarcodeConfigFormProps) {
   return (
@@ -73,7 +86,7 @@ export function BarcodeConfigForm({
       <CardContent className="space-y-6">
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="companyName">Company Name</Label>
+            <Label htmlFor="companyName">Company Name (Optional)</Label>
             <Input
               id="companyName"
               name="companyName"
@@ -183,12 +196,47 @@ export function BarcodeConfigForm({
           </div>
         )}
 
-        <div className="flex flex-wrap gap-3">
-          <Button onClick={onSubmit} disabled={isSubmitting}>
-            {isSubmitting ? "Generating..." : "Generate Barcodes"}
-          </Button>
+        <Separator />
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="scale">Barcode Scale</Label>
+            <Input
+              id="scale"
+              name="scale"
+              type="number"
+              min={MIN_BARCODE_SCALE}
+              max={MAX_BARCODE_SCALE}
+              value={values.scale}
+              onChange={(event) => onChange("scale", event.target.value)}
+            />
+            {renderFieldError(errors.scale)}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="height">Barcode Height</Label>
+            <Input
+              id="height"
+              name="height"
+              type="number"
+              min={MIN_BARCODE_HEIGHT}
+              max={MAX_BARCODE_HEIGHT}
+              value={values.height}
+              onChange={(event) => onChange("height", event.target.value)}
+            />
+            {renderFieldError(errors.height)}
+          </div>
+        </div>
+
+        <div className="flex justify-end flex-wrap gap-3">
           <Button variant="outline" onClick={onReset} disabled={isSubmitting}>
             Reset
+          </Button>
+          <Button variant="secondary" onClick={onPrint} disabled={isSubmitting || !canPrint}>
+            Print
+          </Button>
+          <Button onClick={onSubmit} disabled={isSubmitting}>
+            {isSubmitting ? "Generating..." : "Generate Barcodes"}
           </Button>
         </div>
       </CardContent>

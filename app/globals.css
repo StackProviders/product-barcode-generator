@@ -192,3 +192,36 @@
     letter-spacing: var(--tracking-normal);
   }
 }
+
+@media print {
+  @page {
+    size: auto;
+    margin: 10mm;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .print-page {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  .print-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .print-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border-color: #d4d4d8 !important;
+    border-radius: 0 !important;
+  }
+
+  .print-safe-text {
+    color: #000000 !important;
+  }
+}

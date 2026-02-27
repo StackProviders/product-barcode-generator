@@ -9,16 +9,24 @@ export type GenerationMode = (typeof GENERATION_MODES)[number];
 export const DEFAULT_BARCODE_FORMAT: BarcodeFormat = "code128";
 export const DEFAULT_GENERATION_MODE: GenerationMode = "timestamp";
 export const DEFAULT_TIMESTAMP_QUANTITY = 12;
+export const DEFAULT_BARCODE_SCALE = 3;
+export const DEFAULT_BARCODE_HEIGHT = 12;
+export const MIN_BARCODE_SCALE = 1;
+export const MAX_BARCODE_SCALE = 8;
+export const MIN_BARCODE_HEIGHT = 8;
+export const MAX_BARCODE_HEIGHT = 40;
 export const MAX_BARCODE_BATCH = 5000;
 
 export interface BarcodeGeneratorConfigInput {
-  companyName: string;
+  companyName?: string;
   prefix?: string;
   format?: BarcodeFormat;
   mode?: GenerationMode;
   quantity?: number;
   rangeStart?: number;
   rangeEnd?: number;
+  scale?: number;
+  height?: number;
   companyId?: string;
   tenantId?: string;
 }
@@ -31,6 +39,8 @@ export interface BarcodeGeneratorConfig {
   quantity: number;
   rangeStart: number;
   rangeEnd: number;
+  scale: number;
+  height: number;
   companyId?: string;
   tenantId?: string;
 }
@@ -42,7 +52,9 @@ export type ConfigField =
   | "mode"
   | "quantity"
   | "rangeStart"
-  | "rangeEnd";
+  | "rangeEnd"
+  | "scale"
+  | "height";
 
 export interface ConfigValidationError {
   field: ConfigField;
@@ -84,14 +96,10 @@ export const validateGeneratorConfig = (
   input: BarcodeGeneratorConfigInput,
 ): ConfigValidationResult => {
   const errors: ConfigValidationError[] = [];
-  const companyName = input.companyName.trim();
+  const companyName = (input.companyName ?? "").trim();
   const prefix = sanitizePrefix(input.prefix);
   const format = input.format ?? DEFAULT_BARCODE_FORMAT;
   const mode = input.mode ?? DEFAULT_GENERATION_MODE;
-
-  if (!companyName) {
-    errors.push({ field: "companyName", message: "Company name is required." });
-  }
 
   if (!BARCODE_FORMATS.includes(format)) {
     errors.push({ field: "format", message: "Selected barcode format is not supported." });
@@ -104,6 +112,8 @@ export const validateGeneratorConfig = (
   const quantity = input.quantity ?? DEFAULT_TIMESTAMP_QUANTITY;
   const rangeStart = input.rangeStart ?? 1;
   const rangeEnd = input.rangeEnd ?? 1;
+  const scale = input.scale ?? DEFAULT_BARCODE_SCALE;
+  const height = input.height ?? DEFAULT_BARCODE_HEIGHT;
 
   if (mode === "timestamp") {
     if (!isFiniteInteger(quantity) || quantity <= 0) {
@@ -149,6 +159,20 @@ export const validateGeneratorConfig = (
     }
   }
 
+  if (!isFiniteInteger(scale) || scale < MIN_BARCODE_SCALE || scale > MAX_BARCODE_SCALE) {
+    errors.push({
+      field: "scale",
+      message: `Scale must be a whole number between ${MIN_BARCODE_SCALE} and ${MAX_BARCODE_SCALE}.`,
+    });
+  }
+
+  if (!isFiniteInteger(height) || height < MIN_BARCODE_HEIGHT || height > MAX_BARCODE_HEIGHT) {
+    errors.push({
+      field: "height",
+      message: `Height must be a whole number between ${MIN_BARCODE_HEIGHT} and ${MAX_BARCODE_HEIGHT}.`,
+    });
+  }
+
   if (errors.length > 0) {
     return { config: null, errors };
   }
@@ -162,6 +186,8 @@ export const validateGeneratorConfig = (
       quantity,
       rangeStart,
       rangeEnd,
+      scale,
+      height,
       companyId: input.companyId,
       tenantId: input.tenantId,
     },

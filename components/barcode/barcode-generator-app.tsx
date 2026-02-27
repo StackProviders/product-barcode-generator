@@ -3,8 +3,14 @@
 import { useMemo, useState } from "react";
 
 import type { BarcodeGeneratorConfigInput, ConfigField } from "@/lib/config";
-import { DEFAULT_BARCODE_FORMAT, DEFAULT_GENERATION_MODE } from "@/lib/config";
+import {
+  DEFAULT_BARCODE_FORMAT,
+  DEFAULT_BARCODE_HEIGHT,
+  DEFAULT_BARCODE_SCALE,
+  DEFAULT_GENERATION_MODE,
+} from "@/lib/config";
 import { BarcodeConfigError, generateBarcodes } from "@/lib/generator";
+import { createPrintJobKey } from "@/lib/print";
 
 import { BarcodeConfigForm, type BarcodeFormValues } from "@/components/barcode/barcode-config-form";
 import { BarcodePreviewGrid } from "@/components/barcode/barcode-preview-grid";
@@ -29,6 +35,8 @@ const DEFAULT_FORM_VALUES: BarcodeFormValues = {
   quantity: "24",
   rangeStart: "1",
   rangeEnd: "100",
+  scale: String(DEFAULT_BARCODE_SCALE),
+  height: String(DEFAULT_BARCODE_HEIGHT),
 };
 
 const parseIntegerInput = (value: string): number | undefined => {
@@ -48,6 +56,8 @@ const toConfigInput = (formValues: BarcodeFormValues): BarcodeGeneratorConfigInp
   quantity: parseIntegerInput(formValues.quantity),
   rangeStart: parseIntegerInput(formValues.rangeStart),
   rangeEnd: parseIntegerInput(formValues.rangeEnd),
+  scale: parseIntegerInput(formValues.scale),
+  height: parseIntegerInput(formValues.height),
 });
 
 const toErrorMap = (error: BarcodeConfigError): FieldErrorMap => {
@@ -70,6 +80,14 @@ export function BarcodeGeneratorApp() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const canRenderPreview = useMemo(() => barcodes.length > 0, [barcodes.length]);
+  const resolvedScale = useMemo(
+    () => parseIntegerInput(formValues.scale) ?? DEFAULT_BARCODE_SCALE,
+    [formValues.scale],
+  );
+  const resolvedHeight = useMemo(
+    () => parseIntegerInput(formValues.height) ?? DEFAULT_BARCODE_HEIGHT,
+    [formValues.height],
+  );
 
   const updateField = <K extends keyof BarcodeFormValues>(field: K, value: BarcodeFormValues[K]) => {
     setFormValues((previous) => ({ ...previous, [field]: value }));
@@ -104,6 +122,35 @@ export function BarcodeGeneratorApp() {
     }
   };
 
+  const handlePrint = () => {
+    if (barcodes.length === 0) {
+      return;
+    }
+
+    const key = createPrintJobKey();
+    const payload = {
+      companyName: formValues.companyName.trim(),
+      format: formValues.format,
+      scale: resolvedScale,
+      height: resolvedHeight,
+      values: barcodes,
+      createdAt: Date.now(),
+    };
+
+    try {
+      window.localStorage.setItem(key, JSON.stringify(payload));
+      const printWindow = window.open(`/print?job=${encodeURIComponent(key)}`, "_blank", "noopener");
+
+      if (!printWindow) {
+        setGlobalError(
+          "Could not open print window. Allow pop-ups for this site and try again.",
+        );
+      }
+    } catch {
+      setGlobalError("Print preparation failed. Check browser storage permissions and try again.");
+    }
+  };
+
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4 md:p-8">
       <Card>
@@ -130,8 +177,10 @@ export function BarcodeGeneratorApp() {
         values={formValues}
         errors={fieldErrors}
         isSubmitting={isSubmitting}
+        canPrint={barcodes.length > 0}
         onChange={updateField}
         onSubmit={handleGenerate}
+        onPrint={handlePrint}
         onReset={resetAll}
       />
 
@@ -144,9 +193,21 @@ export function BarcodeGeneratorApp() {
       ) : null}
 
       {canRenderPreview ? (
-        <BarcodePreviewGrid values={barcodes} format={formValues.format} />
+        <BarcodePreviewGrid
+          values={barcodes}
+          companyName={formValues.companyName}
+          format={formValues.format}
+          scale={resolvedScale}
+          height={resolvedHeight}
+        />
       ) : (
-        <BarcodePreviewGrid values={[]} format={formValues.format} />
+        <BarcodePreviewGrid
+          values={[]}
+          companyName={formValues.companyName}
+          format={formValues.format}
+          scale={resolvedScale}
+          height={resolvedHeight}
+        />
       )}
     </div>
   );

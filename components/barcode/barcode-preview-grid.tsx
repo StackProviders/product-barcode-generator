@@ -8,11 +8,21 @@ import { useBarcodePreviews } from "@/hooks/use-barcode-previews";
 
 interface BarcodePreviewGridProps {
   values: string[];
+  companyName: string;
   format: BarcodeFormat;
+  scale: number;
+  height: number;
 }
 
-export function BarcodePreviewGrid({ values, format }: BarcodePreviewGridProps) {
-  const { items, isLoading, hiddenCount } = useBarcodePreviews(values, format);
+export function BarcodePreviewGrid({
+  values,
+  companyName,
+  format,
+  scale,
+  height,
+}: BarcodePreviewGridProps) {
+  const { items, isLoading, hiddenCount } = useBarcodePreviews(values, format, scale, height);
+  const safeCompanyName = companyName.trim();
 
   if (values.length === 0) {
     return (
@@ -47,6 +57,9 @@ export function BarcodePreviewGrid({ values, format }: BarcodePreviewGridProps) 
               key={item.id}
               className="space-y-3 rounded-lg border border-border bg-muted/30 p-4"
             >
+              {safeCompanyName ? (
+                <p className="text-center text-xs font-medium text-foreground">{safeCompanyName}</p>
+              ) : null}
               <p className="truncate text-xs text-muted-foreground">{item.value}</p>
               <div className="flex min-h-28 items-center justify-center rounded-md border border-border bg-card p-2 dark:bg-white">
                 {item.status === "ready" && item.url ? (

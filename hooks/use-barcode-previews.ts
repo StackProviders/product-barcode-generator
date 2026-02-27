@@ -70,6 +70,8 @@ const itemsReducer = (
 const fetchBarcodeBlob = async (
   value: string,
   format: BarcodeFormat,
+  scale: number,
+  height: number,
   signal: AbortSignal,
 ): Promise<Blob> => {
   const response = await fetch("/api/barcode", {
@@ -80,6 +82,8 @@ const fetchBarcodeBlob = async (
     body: JSON.stringify({
       text: value,
       format,
+      scale,
+      height,
       includeText: true,
     }),
     signal,
@@ -98,6 +102,8 @@ const fetchBarcodeBlob = async (
 export const useBarcodePreviews = (
   values: string[],
   format: BarcodeFormat,
+  scale: number,
+  height: number,
 ): BarcodePreviewState => {
   const sanitizedValues = useMemo(
     () => values.map((value) => value.trim()).filter((value) => value.length > 0),
@@ -129,7 +135,13 @@ export const useBarcodePreviews = (
         const value = previewValues[currentIndex];
 
         try {
-          const blob = await fetchBarcodeBlob(value, format, abortController.signal);
+          const blob = await fetchBarcodeBlob(
+            value,
+            format,
+            scale,
+            height,
+            abortController.signal,
+          );
 
           if (!isActive) {
             return;
@@ -162,7 +174,7 @@ export const useBarcodePreviews = (
         URL.revokeObjectURL(url);
       }
     };
-  }, [format, previewValues]);
+  }, [format, height, previewValues, scale]);
 
   return {
     items,
