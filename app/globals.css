@@ -193,6 +193,14 @@
   }
 }
 
+.print-grid {
+  grid-template-columns: repeat(var(--print-columns, 4), minmax(0, 1fr));
+}
+
+.print-barcode-wrap {
+  background: #ffffff;
+}
+
 @media print {
   @page {
     size: auto;
@@ -210,8 +218,18 @@
   }
 
   .print-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    gap: 3mm !important;
+    grid-template-columns: repeat(var(--print-columns, 4), minmax(0, 1fr)) !important;
+    gap: 2.5mm !important;
+  }
+
+  .print-sheet {
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .print-sheet:last-of-type {
+    break-after: auto;
+    page-break-after: auto;
   }
 
   .print-card {
@@ -232,6 +250,7 @@
 
   .print-barcode-image {
     max-height: 14mm !important;
+    image-rendering: crisp-edges;
   }
 
   .print-company,
