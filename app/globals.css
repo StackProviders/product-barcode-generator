@@ -196,7 +196,7 @@
 @media print {
   @page {
     size: auto;
-    margin: 10mm;
+    margin: 6mm;
   }
 
   body {
@@ -210,15 +210,34 @@
   }
 
   .print-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 8px !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 3mm !important;
   }
 
   .print-card {
     break-inside: avoid;
     page-break-inside: avoid;
-    border-color: #d4d4d8 !important;
+    border: 0 !important;
     border-radius: 0 !important;
+    background: #ffffff !important;
+    padding: 2mm !important;
+  }
+
+  .print-barcode-wrap {
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+  }
+
+  .print-barcode-image {
+    max-height: 14mm !important;
+  }
+
+  .print-company,
+  .print-number {
+    font-size: 10px !important;
+    line-height: 1.1 !important;
   }
 
   .print-safe-text {

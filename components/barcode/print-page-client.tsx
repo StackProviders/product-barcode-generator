@@ -22,7 +22,7 @@ const buildBarcodeImageSrc = (
     format,
     scale: String(scale),
     height: String(height),
-    includeText: "true",
+    includeText: "false",
   });
 
   return `/api/barcode?${params.toString()}`;
@@ -137,23 +137,25 @@ export function PrintPageClient({ jobKey }: PrintPageClientProps) {
         {job.values.map((value, index) => (
           <article
             key={`${value}-${index}`}
-            className="print-card rounded-lg border border-border bg-card p-3"
+            className="print-card rounded-md bg-card p-2"
           >
             {safeCompanyName ? (
-              <p className="print-safe-text text-center text-xs font-medium text-foreground">
+              <p className="print-company print-safe-text text-center text-xs font-medium text-foreground">
                 {safeCompanyName}
               </p>
             ) : null}
-            <p className="print-safe-text mt-2 truncate text-xs text-muted-foreground">{value}</p>
-            <div className="mt-2 flex min-h-28 items-center justify-center rounded-md border border-border bg-white p-2">
+            <div className="print-barcode-wrap mt-1 flex min-h-16 items-center justify-center rounded-sm bg-white p-1">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={buildBarcodeImageSrc(value, job.format, job.scale, job.height)}
                 alt={`Barcode ${value}`}
-                className="h-auto max-h-28 w-full object-contain"
+                className="print-barcode-image h-auto w-full object-contain"
                 loading="eager"
               />
             </div>
+            <p className="print-number print-safe-text mt-1 truncate text-center text-xs text-foreground">
+              {value}
+            </p>
           </article>
         ))}
       </section>
