@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowUpRight, Building2 } from "lucide-react";
+import { ArrowUpRight, Building2, Github, LifeBuoy } from "lucide-react";
 
 import type { BarcodeGeneratorConfigInput, ConfigField } from "@/lib/config";
 import {
@@ -18,6 +18,7 @@ import { BarcodePreviewGrid } from "@/components/barcode/barcode-preview-grid";
 import { PwaInstallButton } from "@/components/pwa-install-button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardAction,
@@ -164,35 +165,66 @@ export function BarcodeGeneratorApp() {
               <ThemeToggle />
             </div>
           </CardAction>
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="secondary">Built by StackProviders</Badge>
+            <Badge variant="outline">Agency Product Engineering</Badge>
+          </div>
           <CardTitle className="text-2xl">Product Barcode Generator</CardTitle>
-          <CardDescription>
-            Enterprise-ready POS barcode and serial generation system designed for operational
-            speed, print reliability, and future multi-tenant growth.
+          <CardDescription className="max-w-3xl">
+            Enterprise-ready POS barcode and serial generation platform for operations teams that
+            need fast generation, reliable print workflows, and scalable architecture.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
-            <article className="rounded-lg border border-border bg-muted/30 p-4">
-              <div className="flex items-center gap-2">
-                <Building2 className="size-4 text-muted-foreground" />
-                <Badge variant="secondary">Built by StackProviders</Badge>
+          <article className="rounded-xl border border-border bg-gradient-to-br from-primary/10 via-muted/30 to-secondary/20 p-4 sm:p-5">
+            <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Building2 className="size-4 text-muted-foreground" />
+                  <p className="text-sm font-semibold">Agency Spotlight</p>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  StackProviders builds production-grade products for agencies, startups, and
+                  enterprise operations teams. This project is one of our open implementations of a
+                  practical POS barcode pipeline.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="outline">Open Source</Badge>
+                  <Badge variant="outline">Production Pattern</Badge>
+                  <Badge variant="outline">POS Workflow</Badge>
+                </div>
               </div>
-              <p className="mt-3 text-sm text-muted-foreground">
-                We build production-grade web products for agencies, startups, and operations teams.
-                This barcode platform is part of our real-world POS and automation toolchain.
-              </p>
-            </article>
 
-            <Link
-              href="https://github.com/StackProviders/product-barcode-generator"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-            >
-              Visit Project
-              <ArrowUpRight className="size-4" />
-            </Link>
-          </div>
+              <div className="flex flex-wrap gap-2 lg:justify-end">
+                <Button variant="outline" asChild>
+                  <Link href="https://github.com/StackProviders" target="_blank" rel="noreferrer">
+                    <Github className="size-4" />
+                    Agency Profile
+                  </Link>
+                </Button>
+                <Button variant="outline" asChild>
+                  <Link
+                    href="https://github.com/StackProviders/product-barcode-generator/issues"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <LifeBuoy className="size-4" />
+                    Issues / Support
+                  </Link>
+                </Button>
+                <Button asChild>
+                  <Link
+                    href="https://github.com/StackProviders/product-barcode-generator"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    View Project
+                    <ArrowUpRight className="size-4" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </article>
         </CardContent>
       </Card>
 
