@@ -14,6 +14,7 @@ import { createPrintJobKey } from "@/lib/print";
 
 import { BarcodeConfigForm, type BarcodeFormValues } from "@/components/barcode/barcode-config-form";
 import { BarcodePreviewGrid } from "@/components/barcode/barcode-preview-grid";
+import { PwaInstallButton } from "@/components/pwa-install-button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -156,7 +157,10 @@ export function BarcodeGeneratorApp() {
       <Card>
         <CardHeader>
           <CardAction>
-            <ThemeToggle />
+            <div className="flex items-center gap-2">
+              <PwaInstallButton />
+              <ThemeToggle />
+            </div>
           </CardAction>
           <CardTitle className="text-2xl">Product Barcode Generator</CardTitle>
           <CardDescription>

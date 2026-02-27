@@ -167,7 +167,7 @@ export function PrintPageClient({ jobKey }: PrintPageClientProps) {
   const safeCompanyName = job.companyName.trim();
 
   return (
-    <main className="print-page mx-auto flex w-full max-w-7xl flex-col gap-6 p-4 md:p-8">
+    <main className="print-page mx-auto flex w-full max-w-7xl flex-col gap-4 p-3 sm:p-4 md:gap-6 md:p-8">
       <Card className="print:hidden">
         <CardHeader>
           <CardTitle>Print Barcodes</CardTitle>
@@ -182,7 +182,7 @@ export function PrintPageClient({ jobKey }: PrintPageClientProps) {
             <Badge variant="outline">Quality: {QUALITY_PROFILE[quality].label}</Badge>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
             <div className="space-y-2">
               <Label htmlFor="print-columns">Columns Per Page</Label>
               <Input
